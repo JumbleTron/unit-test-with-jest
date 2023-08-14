@@ -1,19 +1,30 @@
-import StripeProvider from "../src/StripeProvider.js";
 import PaymentService from "../src/PaymentService.js";
-import { jest, describe, expect, test } from '@jest/globals'
+import { jest, describe, test, expect, afterEach } from '@jest/globals'
 
-jest.mock('./StripeProvider', () => {
-	return jest.fn().mockImplementation(() => {
-		return {
-			pay: jest.fn(),
-		};
-	});
+jest.unstable_mockModule('../src/StripeProvider.js', () => {
+	return {
+		default: function () {
+			return {
+				pay: jest.fn(),
+				debug: jest.fn(),
+			};
+		},
+	};
 });
 
-describe('Test pay method', () => {
-	test('We can check if the consumer called the class constructor', () => {
-		const paymentService = new PaymentService(new StripeProvider())
+const StripeProvider = (await import('../src/StripeProvider.js')).default;
+
+afterEach(() => {
+	jest.restoreAllMocks();
+});
+
+
+describe('Test payment', () => {
+	test('We can check if the method called', async () => {
+		const stripeProvider = new StripeProvider();
+		const paymentService = new PaymentService(stripeProvider)
 		paymentService.pay(500);
-		expect(StripeProvider).toHaveBeenCalledTimes(1);
+		expect(jest.spyOn(stripeProvider, 'pay')).toHaveBeenCalledTimes(1);
+		expect(jest.spyOn(stripeProvider, 'debug')).toHaveBeenCalledTimes(0);
 	})
 });

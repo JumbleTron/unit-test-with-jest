@@ -7,19 +7,21 @@ export default class OrderService {
 		this.paymentService = new PaymentService(new StripeProvider());
 	}
 
-	addProduct(product): void {
+	addProduct(product) {
 		this.products.push(product);
 	}
 
-	processPayment(): void {
+	processPayment() {
 		this.paymentService.pay(this.getTotalAmount());
 	}
 
-	getTotalAmount(): number {
+	getTotalAmount() {
 		return this.products.reduce((sum, product) => {
 			if (product.hasOwnProperty('price')) {
+				console.log(product.getNameWithPrice())
 				return sum + product.price;
 			}
-		})
+			return sum;
+		}, 0)
 	}
 }

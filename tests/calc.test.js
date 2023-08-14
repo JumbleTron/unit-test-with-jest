@@ -1,4 +1,5 @@
 import { calc } from "../src/calc.js";
+import { describe, test, expect } from '@jest/globals'
 
 describe('Calculate function', () => {
 	const num1 = 5;
