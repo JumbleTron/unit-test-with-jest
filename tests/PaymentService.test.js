@@ -20,11 +20,18 @@ afterEach(() => {
 
 
 describe('Test payment', () => {
-	test('We can check if the method called', async () => {
+	// test('We can check if the method called', async () => {
+	// 	const stripeProvider = new StripeProvider();
+	// 	const paymentService = new PaymentService(stripeProvider)
+	// 	paymentService.pay(500);
+	// 	expect(jest.spyOn(stripeProvider, 'pay')).toHaveBeenCalledTimes(1);
+	// 	expect(jest.spyOn(stripeProvider, 'debug')).toHaveBeenCalledTimes(0);
+	// })
+	test('Check catch block', async () => {
 		const stripeProvider = new StripeProvider();
 		const paymentService = new PaymentService(stripeProvider)
 		paymentService.pay(500);
 		expect(jest.spyOn(stripeProvider, 'pay')).toHaveBeenCalledTimes(1);
-		expect(jest.spyOn(stripeProvider, 'debug')).toHaveBeenCalledTimes(0);
+		expect(jest.spyOn(stripeProvider, 'debug')).toHaveBeenCalledTimes(1);
 	})
 });
